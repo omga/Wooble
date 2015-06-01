@@ -17,9 +17,8 @@
         android:text="Welcome to"
         android:textSize="28sp"
         android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"/>
+        android:layout_above="@+id/textView2"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,9 +28,10 @@
         android:textSize="42sp"
         android:textStyle="bold"
         android:id="@+id/textView2"
-        android:layout_below="@+id/textView"
+        android:layout_above="@+id/loginFB"
         android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView"/>
+        android:layout_alignStart="@+id/textView"
+        android:layout_marginBottom="50dp"/>
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/loginFB"
@@ -39,6 +39,13 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
+    <Button
+        android:id="@+id/btn_parse_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LoginParse?"
+        android:layout_below="@+id/loginFB"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
 
