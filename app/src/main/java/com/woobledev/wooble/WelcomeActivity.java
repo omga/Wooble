@@ -20,7 +20,7 @@ import com.woobledev.wooble.view.kbv.KenBurnsView;
  * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
  * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
-public class WelcomeActivity extends Activity implements LoginFragment.OnFragmentInteractionListener {
+public class WelcomeActivity extends Activity implements BlankFragment.OnFragmentInteractionListener {
 
 
     @Override
