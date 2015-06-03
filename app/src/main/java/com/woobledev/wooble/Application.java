@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseObject;
 
 
 /**
@@ -20,6 +21,7 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        ParseObject.registerSubclass(WoobleUser.class);
         FacebookSdk.sdkInitialize(getApplicationContext());
 //        ParseObject.registerSubclass(AnywallPost.class);
         Parse.initialize(this, getString(R.string.parse_app_id),

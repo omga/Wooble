@@ -14,11 +14,13 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.woobledev.wooble.view.kbv.KenBurnsView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -52,23 +54,35 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
 
             @Override
             public void onClick(View v) {
-                List<String> permissions = Arrays.asList("public_profile", "email");
-                ParseFacebookUtils.logInWithReadPermissionsInBackground(WelcomeActivity.this, permissions, new LogInCallback() {
+                List<String> permissions = Arrays.asList("public_profile", "email", "user_photos", "user_status", "user_about_me    ");
+                ParseFacebookUtils.logInWithReadPermissionsInBackground(
+                        WelcomeActivity.this, permissions, new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException err) {
                         if (user == null) {
                             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                            return;
                         } else if (user.isNew()) {
                             Log.d("MyApp", "User signed up and logged in through Facebook! " + user.getEmail());
-                            facebookFetchUserInfo();
+                            FacebookDataFetcher dataFetcher =new FacebookDataFetcher();
+                            dataFetcher.getUserInfo((WoobleUser) user);
+                            dataFetcher.getUserAlbums();
+
                         } else {
                             Log.d("MyApp", "User logged in through Facebook! " + user.getEmail()
-                                    + " " + user.getSessionToken()
-                                    + " " + user.getUsername()
-                                    + " " + user.isAuthenticated()
+                                            + " " + user.getSessionToken()
+                                            + " " + user.getUsername()
+                                            + " " + user.isAuthenticated()
                             );
-                            facebookFetchUserInfo();
+                            FacebookDataFetcher dataFetcher =new FacebookDataFetcher();
+                            //dataFetcher.getUserInfo((WoobleUser) user);
+                            dataFetcher.getUserAlbums();
+
                         }
+                        Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+
                     }
                 });
             }
@@ -80,17 +94,7 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
 //                .commit();
     }
 
-    private void facebookFetchUserInfo () {
-        GraphRequest graphRequest = GraphRequest.newMeRequest(
-                AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback(){
 
-                    @Override
-                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                        Log.d(TAG,jsonObject.toString());
-                    }
-                });
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
