@@ -3,6 +3,25 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/main_color_500</item>
+        <item name="colorPrimaryDark">@color/main_color_700</item>
+        <item name="colorAccent">@color/main_color_100</item>
     </style>
 
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/main_color_500</item>
+        <item name="colorPrimaryDark">@color/main_color_700</item>
+    </style>
+
+
+    <!-- ActionBar related themes -->
+    <style name="ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="background">@color/main_color_500</item>
+    </style>
 </resources>

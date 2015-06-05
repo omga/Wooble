@@ -1,7 +1,7 @@
 package com.woobledev.wooble;
 
 import android.media.Image;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +26,10 @@ public class MainActivityFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_main, container, false);
         ImageView imageView = (ImageView) v.findViewById(R.id.pictureImageView);
         WoobleUser user = (WoobleUser) ParseUser.getCurrentUser();
-        if(user.getPictures().size()>0)
+        if(user.getPictures()!=null && user.getPictures().size()>0)
             Picasso.with(getActivity())
                     .load(user.getPictures().get(0))
                     .into(imageView);
-
         return v;
     }
 }

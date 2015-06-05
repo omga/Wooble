@@ -8,43 +8,44 @@
         android:id="@+id/ken_burns_images"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/login_background_light"
         />
 
     <TextView
+        android:alpha="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Welcome to"
         android:textSize="28sp"
-        android:id="@+id/textView"
-        android:layout_above="@+id/textView2"
+        android:id="@+id/text_welcome1"
+        android:layout_above="@+id/text_welcome2"
         android:layout_centerHorizontal="true"/>
 
     <TextView
+        android:alpha="0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Wooble"
         android:textSize="42sp"
         android:textStyle="bold"
-        android:id="@+id/textView2"
-        android:layout_above="@+id/loginFB"
-        android:layout_alignLeft="@+id/textView"
-        android:layout_alignStart="@+id/textView"
+        android:id="@+id/text_welcome2"
+        android:layout_above="@+id/btn_parse_login"
+        android:layout_alignLeft="@+id/text_welcome1"
+        android:layout_alignStart="@+id/text_welcome1"
         android:layout_marginBottom="50dp"/>
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/loginFB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"/>
     <Button
+        android:alpha="0"
         android:id="@+id/btn_parse_login"
+        style="@style/com_facebook_loginview_default_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LoginParse?"
-        android:layout_below="@+id/loginFB"
+        android:text="@string/login_btn_text"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
