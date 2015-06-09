@@ -78,7 +78,7 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
     }
 
     private void startMainActivity() {
-        Intent i = new Intent(WelcomeActivity.this, MainActivity.class);
+        Intent i = new Intent(WelcomeActivity.this, MainActivityTabbed.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
         finish();
