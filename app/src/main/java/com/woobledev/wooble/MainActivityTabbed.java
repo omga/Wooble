@@ -2,7 +2,7 @@ package com.woobledev.wooble;
 
 import java.util.Locale;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,8 +10,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-public class MainActivityTabbed extends ActionBarActivity implements ActionBar.TabListener {
+public class MainActivityTabbed extends AppCompatActivity implements ActionBar.TabListener {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -47,36 +47,15 @@ public class MainActivityTabbed extends ActionBarActivity implements ActionBar.T
 //        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         Toolbar actionBar = (Toolbar) findViewById(R.id.toolbar);
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(mViewPager);
         setSupportActionBar(actionBar);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        // When swiping between different sections, select the corresponding
-        // tab. We can also use ActionBar.Tab#select() to do this if we have
-        // a reference to the Tab.
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
-
-        // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by
-            // the adapter. Also specify this Activity object, which implements
-            // the TabListener interface, as the callback (listener) for when
-            // this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-        }
     }
 
 
@@ -183,7 +162,9 @@ public class MainActivityTabbed extends ActionBarActivity implements ActionBar.T
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main_activity_tabbed, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_blank, container, false);
+            ((TextView) rootView.findViewById(R.id.fragment_textView))
+                .setText(String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }

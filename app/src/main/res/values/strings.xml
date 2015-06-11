@@ -10,10 +10,11 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="login_btn_text">Login via facebook</string>
+    <string name="login_btn_text">Login with facebook</string>
     <string name="title_activity_main_activity_tabbed">MainActivityTabbed</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">Friends</string>
+    <string name="title_section2">Messages</string>
+    <string name="title_section3">Search</string>
+
 </resources>
