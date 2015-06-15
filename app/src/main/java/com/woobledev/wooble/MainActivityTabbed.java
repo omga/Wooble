@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +22,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivityTabbed extends AppCompatActivity {
+public class MainActivityTabbed extends AppCompatActivity implements UserListFragment.OnFragmentInteractionListener{
 
 
+    private static final String TAG = "MainActivityTabbed";
     @InjectView(R.id.viewpager) ViewPager mViewPager;
     @InjectView(R.id.toolbar) Toolbar mToolbar;
     @InjectView(R.id.tabs) TabLayout mTabLayout;
@@ -62,6 +64,11 @@ public class MainActivityTabbed extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFragmentInteraction(String id) {
+        Log.d(TAG,"onFragmentInteraction "+id);
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -76,6 +83,8 @@ public class MainActivityTabbed extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            if(position == 1)
+                return UserListFragment.newInstance("1","2");
             return PlaceholderFragment.newInstance(position + 1);
         }
 

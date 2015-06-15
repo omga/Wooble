@@ -23,8 +23,8 @@ public class WoobleUser extends ParseUser {
         put("pictures", pictures);
     }
 
-    public void getGender() {
-        getString("gender");
+    public String getGender() {
+        return getString("gender");
     }
 
     public void setGender(String gender) {
