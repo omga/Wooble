@@ -16,5 +16,6 @@
     <string name="title_section1">Friends</string>
     <string name="title_section2">Messages</string>
     <string name="title_section3">Search</string>
+    <string name="message_elipses">Message...</string>
 
 </resources>

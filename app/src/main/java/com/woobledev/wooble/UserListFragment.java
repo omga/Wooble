@@ -1,12 +1,14 @@
 package com.woobledev.wooble;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 import com.parse.FindCallback;
@@ -71,13 +73,21 @@ public class UserListFragment extends ListFragment {
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> list, ParseException e) {
-                for(ParseUser user:list){
-                    String email = user.getEmail();
-                    String gender = ((WoobleUser)user).getGender();
-                    users.add(gender==null?user.getUsername():gender);
-                }
-                setListAdapter(new ArrayAdapter<String>(getActivity(),
+                if (e == null) {
+                    for (ParseUser user : list) {
+                        String email = user.getEmail();
+                        String gender = ((WoobleUser) user).getGender();
+                        users.add(user.getUsername());
+                    }
+
+                    setListAdapter(new ArrayAdapter<String>(getActivity(),
                         android.R.layout.simple_list_item_1, android.R.id.text1, users));
+
+                } else {
+                    Toast.makeText(getActivity(),
+                            "Error loading user list",
+                            Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -113,7 +123,28 @@ public class UserListFragment extends ListFragment {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            openConversation(users.get(position));
+
         }
+    }
+    private void openConversation(String name) {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("username", name);
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> user, ParseException e) {
+                if (e == null) {
+                    //start the messaging activity
+
+                    Intent intent = new Intent(getActivity(), MessagingActivity.class);
+                    intent.putExtra("RECIPIENT_ID", user.get(0).getObjectId());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getActivity(),
+                            "Error finding that user",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     /**
@@ -129,6 +160,8 @@ public class UserListFragment extends ListFragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
+
     }
+
 
 }

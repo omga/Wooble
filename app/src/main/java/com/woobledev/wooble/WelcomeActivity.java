@@ -62,6 +62,7 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
         ButterKnife.inject(this);
         animationAlpha(textWelcome, 500, null);
         animationAlpha(textWelcome2, 2000, new AnimationEndListener());
+
     }
 
 
@@ -78,6 +79,7 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
     }
 
     private void startMainActivity() {
+
         Intent i = new Intent(WelcomeActivity.this, MainActivityTabbed.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);

@@ -3,4 +3,8 @@
     <color name="main_color_500">#478fcc</color>
     <color name="main_color_700">#3374ba</color>
     <color name="main_color_100">#bdddf4</color>
+    <color name="sinch_purple">#ff63029d</color>
+    <color name="off_white">#fffafafa</color>
+    <color name="dark_gray">#ffb3b3b3</color>
+    <color name="very_dark_gray">#636363</color>
 </resources>
