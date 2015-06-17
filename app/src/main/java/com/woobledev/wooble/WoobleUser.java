@@ -31,6 +31,22 @@ public class WoobleUser extends ParseUser {
         put("gender",gender);
     }
 
+    public String getName() {
+        return getString("name");
+    }
+
+    public void setName(String name) {
+        put("name",name);
+    }
+
+    public String getBirthday() {
+        return getString("birthday");
+    }
+
+    public void setBirthday(String birthday) {
+        put("birthday",birthday);
+    }
+
 public static enum Gender {
     MALE("male"),
     FEMALE("female");

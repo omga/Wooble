@@ -7,7 +7,7 @@
         <item name="actionBarStyle">@style/ActionBarStyle</item>
         <item name="colorPrimary">@color/main_color_500</item>
         <item name="colorPrimaryDark">@color/main_color_700</item>
-        <item name="colorAccent">@color/main_color_100</item>
+        <item name="colorAccent">@color/accent_color_500</item>
     </style>
 
     <!--<style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.DarkActionBar">-->

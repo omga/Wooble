@@ -17,5 +17,8 @@
     <string name="title_section2">Messages</string>
     <string name="title_section3">Search</string>
     <string name="message_elipses">Message...</string>
+    <string name="user_bio_text">About:</string>
+    <string name="user_gender_text">Gender:</string>
+    <string name="user_age_text">Age:</string>
 
 </resources>

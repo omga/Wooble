@@ -33,9 +33,10 @@ public class FacebookDataFetcher {
                         Log.d(TAG, jsonObject.toString());
                         try {
 
-                            String userName = jsonObject.getString("first_name");
-                            user.setUsername(userName);
+                            String name = jsonObject.getString("first_name");
+                            user.setName(name);
                             user.setGender(jsonObject.getString("gender"));
+                            user.setGender(jsonObject.getString("birthday"));
                             user.saveInBackground();
 
                         } catch (JSONException e) {
