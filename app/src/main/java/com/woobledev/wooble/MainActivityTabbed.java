@@ -25,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -38,10 +40,18 @@ public class MainActivityTabbed extends AppCompatActivity implements UserListFra
     @InjectView(R.id.tabs) TabLayout mTabLayout;
     ProgressDialog progressDialog;
     BroadcastReceiver receiver;
+    WoobleUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mUser = (WoobleUser) ParseUser.getCurrentUser();
+        if(mUser == null) {
+            startActivity(new Intent(this,WelcomeActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main_activity_tabbed);
 
         //start messaging service after logIn
@@ -123,9 +133,11 @@ public class MainActivityTabbed extends AppCompatActivity implements UserListFra
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            if(position == 0)
+                return UserListFragment.newInstance("0","0");
             if(position == 1)
-                return UserListFragment.newInstance("1","2");
-            return PlaceholderFragment.newInstance(position + 1);
+                return UserListFragment.newInstance("1","1");
+            return PlaceholderFragment.newInstance(position);
         }
 
         @Override

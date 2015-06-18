@@ -39,16 +39,18 @@
 
         <activity
             android:name=".ProfileActivity"
-            android:label="@string/title_activity_main" >
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+            android:parentActivityName=".MainActivityTabbed">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivityTabbed"/>
         </activity>
         <activity
             android:name=".MainActivityTabbed"
             android:label="@string/title_activity_main_activity_tabbed" >
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
         <activity android:name=".MessagingActivity"/>
 

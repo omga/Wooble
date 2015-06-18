@@ -34,10 +34,10 @@ public class ProfileFragment extends Fragment {
         userName.setText(user.getName()!=null ? user.getName() : user.getUsername());
         userAge.append(user.getBirthday() != null ? user.getBirthday() : "no age((");
         userGender.append(user.getGender() != null ? user.getGender() : "no dataaa");
-        if(user.getPictures()!=null && user.getPictures().size()>0)
-            Picasso.with(getActivity())
-                    .load(user.getPictures().get(1))
-                    .into(imageView);
+//        if(user.getPictures()!=null && user.getPictures().size()>0)
+//            Picasso.with(getActivity())
+//                    .load(user.getPictures().get(1))
+//                    .into(imageView);
         return v;
     }
 }
