@@ -93,6 +93,7 @@ public class MessagingActivity extends AppCompatActivity{
             Toast.makeText(getApplicationContext(), "Please enter a message", Toast.LENGTH_LONG).show();
             return;
         }
+
         messageService.sendMessage(recipientId, messageBody);
         messageBodyField.setText("");
     }

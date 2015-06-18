@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp">
-    <RelativeLayout android:layout_width="fill_parent" android:layout_height="fill_parent"
+                android:padding="2dp">
+    <RelativeLayout android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
                     android:layout_marginRight="10dp">
         <TextView
             android:id="@+id/txtSender"
@@ -23,13 +24,13 @@
             android:textColor="@color/sinch_purple"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="2dp"
+            android:padding="2dp"
             android:paddingBottom="6dp"
             android:textSize="12sp"
             android:text=""
             android:layout_alignBottom="@+id/txtSender"/>
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtSender"
             android:layout_alignParentLeft="true"
@@ -38,7 +39,7 @@
             >
             <TextView
                 android:id="@+id/txtMessage"
-                android:paddingLeft="12dp"
+                android:paddingLeft="14dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"

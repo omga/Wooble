@@ -16,6 +16,9 @@ import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
 import com.sinch.android.rtc.messaging.WritableMessage;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MessageService extends Service implements SinchClientListener {
     private static final String APP_KEY = "e19c0c80-7a71-47ef-8871-1b7d57ab963e";
     private static final String APP_SECRET = "6y60Oq1JM0uZl1KRrIW14A==";
@@ -87,6 +90,8 @@ public class MessageService extends Service implements SinchClientListener {
     public void sendMessage(String recipientUserId, String textBody) {
         if (messageClient != null) {
             WritableMessage message = new WritableMessage(recipientUserId, textBody);
+            message.getHeaders().put("time", new SimpleDateFormat("dd-MM HH-mm-ss")
+                    .format(Calendar.getInstance().getTime()));
             messageClient.send(message);
         }
     }

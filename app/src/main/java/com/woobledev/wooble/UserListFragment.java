@@ -19,6 +19,7 @@ import com.woobledev.wooble.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A fragment representing a list of Items.
@@ -118,7 +119,7 @@ public class UserListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        if(mParam1=="0") {
+        if(mParam1.equals("0")) {
             startActivity(new Intent(getActivity(), ProfileActivity.class));
             return;
         }

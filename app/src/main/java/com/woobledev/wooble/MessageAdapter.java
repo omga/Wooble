@@ -10,7 +10,10 @@ import android.widget.TextView;
 
 import com.sinch.android.rtc.messaging.WritableMessage;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,6 +29,8 @@ public class MessageAdapter extends BaseAdapter {
         messages = new ArrayList<Pair<WritableMessage, Integer>>();
     }
     public void addMessage(WritableMessage message, int direction) {
+//        message.getHeaders().put("time", new SimpleDateFormat("dd-MM HH-mm-ss")
+//                .format(Calendar.getInstance().getTime()));
         messages.add(new Pair(message, direction));
         notifyDataSetChanged();
     }
@@ -65,7 +70,9 @@ public class MessageAdapter extends BaseAdapter {
         }
         WritableMessage message = messages.get(i).first;
         TextView txtMessage = (TextView) convertView.findViewById(R.id.txtMessage);
+        TextView txtDate = (TextView) convertView.findViewById(R.id.txtDate);
         txtMessage.setText(message.getTextBody());
+        txtDate.setText(message.getHeaders().get("time"));
         return convertView;
     }
 }
