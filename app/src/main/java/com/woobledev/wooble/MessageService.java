@@ -12,6 +12,7 @@ import com.sinch.android.rtc.Sinch;
 import com.sinch.android.rtc.SinchClient;
 import com.sinch.android.rtc.SinchClientListener;
 import com.sinch.android.rtc.SinchError;
+import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
 import com.sinch.android.rtc.messaging.WritableMessage;
@@ -89,9 +90,11 @@ public class MessageService extends Service implements SinchClientListener {
     }
     public void sendMessage(String recipientUserId, String textBody) {
         if (messageClient != null) {
-            WritableMessage message = new WritableMessage(recipientUserId, textBody);
-            message.getHeaders().put("time", new SimpleDateFormat("dd-MM HH-mm-ss")
-                    .format(Calendar.getInstance().getTime()));
+            SinchMessage sinchMessage = new SinchMessage(recipientUserId, textBody);
+            WritableMessage message = new WritableMessage(sinchMessage);
+
+//            message.getHeaders().put("time", new SimpleDateFormat("dd-MM HH-mm-ss")
+//                    .format(Calendar.getInstance().getTime()));
             messageClient.send(message);
         }
     }
