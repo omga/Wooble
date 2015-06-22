@@ -1,5 +1,6 @@
 package com.woobledev.wooble;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,12 +8,19 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
@@ -21,6 +29,7 @@ import butterknife.InjectView;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private static final String TAG = "ProfileActivity";
     @InjectView(R.id.toolbar) Toolbar mToolbar;
     @InjectView(R.id.picturePager) ViewPager mPictureViewPager;
     @InjectView(R.id.viewpagerIndicator) CirclePageIndicator mPageIndicator;
@@ -32,10 +41,30 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.inject(this);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mUser = (WoobleUser) ParseUser.getCurrentUser();
-        mPictureViewPager.setAdapter(new ProfilePicturesAdapter(getSupportFragmentManager()));
-        mPageIndicator.setViewPager(mPictureViewPager);
+        if(getSupportActionBar()!=null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        String username = getIntent().getStringExtra("user");
+        try {
+            loadUser(username);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void loadUser(String username) throws ParseException {
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("username", username);
+        query.getFirstInBackground(new GetCallback<ParseUser>() {
+
+            @Override
+            public void done(ParseUser parseUser, ParseException e) {
+                mUser= (WoobleUser) parseUser;
+                mPictureViewPager.setAdapter(new ProfilePicturesAdapter(getSupportFragmentManager()));
+                mPageIndicator.setViewPager(mPictureViewPager);
+            }
+        });
+
     }
 
 

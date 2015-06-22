@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.parse.ParseUser;
 import com.sinch.android.rtc.ClientRegistration;
@@ -92,7 +93,6 @@ public class MessageService extends Service implements SinchClientListener {
         if (messageClient != null) {
             SinchMessage sinchMessage = new SinchMessage(recipientUserId, textBody);
             WritableMessage message = new WritableMessage(sinchMessage);
-
 //            message.getHeaders().put("time", new SimpleDateFormat("dd-MM HH-mm-ss")
 //                    .format(Calendar.getInstance().getTime()));
             messageClient.send(message);

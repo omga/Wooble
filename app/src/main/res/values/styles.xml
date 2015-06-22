@@ -35,7 +35,7 @@
 
     </style>
     <style name="CustomCirclePageIndicator">
-        <item name="fillColor">@color/main_color_100</item>
+        <item name="fillColor">@color/main_color_500</item>
         <item name="strokeColor">@color/main_color_700</item>
         <item name="strokeWidth">1dp</item>
         <item name="radius">5dp</item>

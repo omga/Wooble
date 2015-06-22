@@ -120,7 +120,9 @@ public class UserListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         if(mParam1.equals("0")) {
-            startActivity(new Intent(getActivity(), ProfileActivity.class));
+            Intent i = new Intent(getActivity(), ProfileActivity.class);
+            i.putExtra("user", users.get(position));
+            startActivity(i);
             return;
         }
 

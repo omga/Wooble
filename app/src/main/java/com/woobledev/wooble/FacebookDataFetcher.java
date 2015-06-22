@@ -49,7 +49,7 @@ public class FacebookDataFetcher {
 
     }
 
-    public void getUserAlbums() {
+    public void getUserAlbums(final WoobleUser user) {
         GraphRequest graphRequest = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -58,6 +58,9 @@ public class FacebookDataFetcher {
                     public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
                         Log.d(TAG, "response: " + jsonObject);
                         try {
+                            String profilePic = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url");
+                            user.setProfilePicture(profilePic);
+                            user.saveInBackground();
                             JSONArray jsonArray = jsonObject.getJSONObject("albums").getJSONArray("data");
                             String id = jsonArray.getJSONObject(0).getString("id");
                             getUserPictures(id);
@@ -67,7 +70,7 @@ public class FacebookDataFetcher {
                     }
                 });
         Bundle parameters = new Bundle();
-        parameters.putString("fields","albums{id}");
+        parameters.putString("fields","albums{id},picture");
         graphRequest.setParameters(parameters);
         graphRequest.executeAsync();
 

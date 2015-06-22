@@ -2,6 +2,7 @@ package com.woobledev.wooble;
 
 import android.app.Activity;
 import android.support.v4.util.Pair;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ public class MessageAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(res, viewGroup, false);
         }
         WritableMessage message = messages.get(i).first;
+        Log.d("MESSAGEADAPTER", "headers: " + message.getHeaders().get("test"));
         TextView txtMessage = (TextView) convertView.findViewById(R.id.txtMessage);
         TextView txtDate = (TextView) convertView.findViewById(R.id.txtDate);
         txtMessage.setText(message.getTextBody());

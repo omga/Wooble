@@ -23,7 +23,8 @@ public class SinchMessage implements Message {
         this();
         recipientIds.add(recepientId);
         textBody = text;
-        headers.put("time","sasi");
+        headers.put("time", new SimpleDateFormat("dd-MM HH:mm:ss")
+                    .format(Calendar.getInstance().getTime()));
     }
 
 

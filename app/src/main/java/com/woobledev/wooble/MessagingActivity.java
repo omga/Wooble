@@ -6,6 +6,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -26,14 +27,19 @@ import com.sinch.android.rtc.messaging.WritableMessage;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by user on 16.06.15.
  */
 public class MessagingActivity extends AppCompatActivity{
+
+    @InjectView(R.id.messageBodyField) EditText messageBodyField;
+    @InjectView(R.id.listMessages) ListView messagesList;
+    @InjectView(R.id.toolbar) Toolbar mToolbar;
     private String recipientId;
-    private EditText messageBodyField;
     private String messageBody;
-    private ListView messagesList;
     MessageAdapter messageAdapter;
     private MessageService.MessageServiceInterface messageService;
     private String currentUserId;
@@ -43,17 +49,17 @@ public class MessagingActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
+        ButterKnife.inject(this);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         bindService(new Intent(this, MessageService.class), serviceConnection, BIND_AUTO_CREATE);
 //get recipientId from the intent
         messageClientListener = new MyMessageClientListener();
-        messagesList = (ListView) findViewById(R.id.listMessages);
         messageAdapter = new MessageAdapter(this);
         messagesList.setAdapter(messageAdapter);
-
         Intent intent = getIntent();
         recipientId = intent.getStringExtra("RECIPIENT_ID");
         currentUserId = ParseUser.getCurrentUser().getObjectId();
-        messageBodyField = (EditText) findViewById(R.id.messageBodyField);
 
         pullMessages();
 //listen for a click on the send button
@@ -77,6 +83,8 @@ public class MessagingActivity extends AppCompatActivity{
                 if (e == null) {
                     for (int i = 0; i < messageList.size(); i++) {
                         WritableMessage message = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
+                        String time = (String) messageList.get(i).get("time");
+                        message.addHeader("time",time==null? "noo":time );
                         if (messageList.get(i).get("senderId").toString().equals(currentUserId)) {
                             messageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
                         } else {
@@ -88,6 +96,7 @@ public class MessagingActivity extends AppCompatActivity{
         });
     }
     private void sendMessage() {
+        messageBody = messageBodyField.getText().toString();
         messageBody = messageBodyField.getText().toString();
         if (messageBody.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Please enter a message", Toast.LENGTH_LONG).show();
@@ -127,7 +136,7 @@ public class MessagingActivity extends AppCompatActivity{
         public void onIncomingMessage(MessageClient client, Message message) {
             //Display an incoming message
             if (message.getSenderId().equals(recipientId)) {
-                WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
+                WritableMessage writableMessage = new WritableMessage(message);
                 messageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING);
             }
         }
@@ -137,7 +146,7 @@ public class MessagingActivity extends AppCompatActivity{
             //Later, I'll show you how to store the
             //message in Parse, so you can retrieve and
             //display them every time the conversation is opened
-            final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
+            final WritableMessage writableMessage = new WritableMessage(message);
             //only add message to parse database if it doesn't already exist there
             ParseQuery<ParseObject> query = ParseQuery.getQuery("ParseMessage");
             query.whereEqualTo("sinchId", message.getMessageId());
@@ -151,6 +160,7 @@ public class MessagingActivity extends AppCompatActivity{
                             parseMessage.put("recipientId", writableMessage.getRecipientIds().get(0));
                             parseMessage.put("messageText", writableMessage.getTextBody());
                             parseMessage.put("sinchId", writableMessage.getMessageId());
+                            parseMessage.put("time", writableMessage.getHeaders().get("time"));
                             parseMessage.saveInBackground();
                             messageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING);
                         }

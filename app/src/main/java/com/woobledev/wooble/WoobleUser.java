@@ -39,6 +39,16 @@ public class WoobleUser extends ParseUser {
         put("name",name);
     }
 
+    public String getProfilePicture() {
+        return getString("profile_picture");
+    }
+
+    public void setProfilePicture(String name) {
+        put("profile_picture",name);
+    }
+
+
+
     public String getBirthday() {
         return getString("birthday");
     }

@@ -106,7 +106,7 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
                             Log.d("MyApp", "User signed up and logged in through Facebook! " + user.getEmail());
                             FacebookDataFetcher dataFetcher = new FacebookDataFetcher();
                             dataFetcher.getUserInfo((WoobleUser) user);
-                            dataFetcher.getUserAlbums();
+                            dataFetcher.getUserAlbums((WoobleUser) user);
 
                         } else {
                             Log.d("MyApp", "User logged in through Facebook! " + user.getEmail()
@@ -115,8 +115,8 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
                                             + " " + user.isAuthenticated()
                             );
                             FacebookDataFetcher dataFetcher = new FacebookDataFetcher();
-                            //dataFetcher.getUserInfo((WoobleUser) user);
-                            dataFetcher.getUserAlbums();
+                            dataFetcher.getUserInfo((WoobleUser) user);
+                            dataFetcher.getUserAlbums((WoobleUser) user);
 
                         }
                         startMainActivity();
