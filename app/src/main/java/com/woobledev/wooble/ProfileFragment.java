@@ -1,6 +1,6 @@
 package com.woobledev.wooble;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +30,7 @@ public class ProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.inject(this, v);
         ImageView imageView = (ImageView) v.findViewById(R.id.pictureImageView);
-        WoobleUser user = (WoobleUser) ParseUser.getCurrentUser();
+        WoobleUser user = ((ProfileActivity) getActivity()).getUser();
         userName.setText(user.getName()!=null ? user.getName() : user.getUsername());
         userAge.append(user.getBirthday() != null ? user.getBirthday() : "no age((");
         userGender.append(user.getGender() != null ? user.getGender() : "no dataaa");
@@ -40,4 +40,5 @@ public class ProfileFragment extends Fragment {
 //                    .into(imageView);
         return v;
     }
+
 }

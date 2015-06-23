@@ -94,7 +94,7 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
             @Override
             public void onClick(View v) {
             List<String> permissions = Arrays.
-                    asList("public_profile", "email", "user_photos", "user_status", "user_about_me    ");
+                    asList("public_profile", "email", "user_photos", "user_status", "user_about_me", "user_birthday");
             ParseFacebookUtils.logInWithReadPermissionsInBackground(
                 WelcomeActivity.this, permissions, new LogInCallback() {
                     @Override

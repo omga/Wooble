@@ -1,13 +1,18 @@
 package com.woobledev.wooble;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import android.support.v4.app.ListFragment;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -15,11 +20,16 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 import com.woobledev.wooble.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * A fragment representing a list of Items.
@@ -38,7 +48,7 @@ public class UserListFragment extends ListFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private List<String> users;
+    private List<WoobleUser> users;
 
     private OnFragmentInteractionListener mListener;
 
@@ -76,13 +86,12 @@ public class UserListFragment extends ListFragment {
             public void done(List<ParseUser> list, ParseException e) {
                 if (e == null) {
                     for (ParseUser user : list) {
-                        String email = user.getEmail();
-                        String gender = ((WoobleUser) user).getGender();
-                        users.add(user.getUsername());
+                        users.add((WoobleUser)user);
                     }
-
-                    setListAdapter(new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_list_item_1, android.R.id.text1, users));
+//
+//                    setListAdapter(new ArrayAdapter<String>(getActivity(),
+//                        android.R.layout.simple_list_item_1, android.R.id.text1, users));
+                    setListAdapter(new UsersAdapter(getActivity(),R.layout.list_users_layout,users));
 
                 } else {
                     Toast.makeText(getActivity(),
@@ -121,7 +130,7 @@ public class UserListFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         if(mParam1.equals("0")) {
             Intent i = new Intent(getActivity(), ProfileActivity.class);
-            i.putExtra("user", users.get(position));
+            i.putExtra("user", users.get(position).getUsername());
             startActivity(i);
             return;
         }
@@ -130,7 +139,7 @@ public class UserListFragment extends ListFragment {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
             mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-            openConversation(users.get(position));
+            openConversation(users.get(position).getUsername());
 
         }
     }
@@ -152,6 +161,45 @@ public class UserListFragment extends ListFragment {
                 }
             }
         });
+    }
+
+    public class UsersAdapter extends ArrayAdapter<WoobleUser> {
+        Transformation transformation;
+        List<WoobleUser> users;
+
+        public UsersAdapter(Context context, int resource, List<WoobleUser> objects) {
+            super(context, resource, objects);
+            users = objects;
+            transformation = new CircleTransformation(2, getResources().getColor(R.color.accent_color_500));
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if(convertView != null)
+                holder = (ViewHolder)convertView.getTag();
+            else {
+                convertView = getLayoutInflater(null).inflate(R.layout.list_users_layout, parent, false);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(holder);
+            }
+            holder.name.setText(users.get(position).getName());
+            Picasso.with(getActivity())
+                    .load(users.get(position).getProfilePicture())
+                    .transform(transformation)
+                    .into(holder.profileImage);
+
+            return convertView;
+        }
+
+        class ViewHolder {
+            @InjectView(R.id.user_name) TextView name;
+            @InjectView(R.id.profileImageView) ImageView profileImage;
+
+            public ViewHolder(View view) {
+                ButterKnife.inject(this, view);
+            }
+        }
     }
 
     /**

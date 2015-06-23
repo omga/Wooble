@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -62,9 +63,18 @@ public class ProfileActivity extends AppCompatActivity {
                 mUser= (WoobleUser) parseUser;
                 mPictureViewPager.setAdapter(new ProfilePicturesAdapter(getSupportFragmentManager()));
                 mPageIndicator.setViewPager(mPictureViewPager);
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                ProfileFragment profileFragment = new ProfileFragment();
+                fragmentTransaction.add(R.id.profile_fragment_container,profileFragment);
+                fragmentTransaction.commit();
             }
         });
 
+    }
+
+
+    public WoobleUser getUser() {
+        return mUser;
     }
 
 
@@ -100,25 +110,20 @@ public class ProfileActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return ProfileImageFragment.newInstance(mUser.getPictures().get(position));
+            return ProfileImageFragment.newInstance(
+                    mUser.getPictures() != null ? mUser.getPictures().get(position):null);
         }
 
         @Override
         public int getCount() {
-            return mUser.getPictures().size();
+            if(mUser.getPictures()!=null)
+                return mUser.getPictures().size();
+            return 1;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-//            Locale l = Locale.getDefault();
-//            switch (position) {
-//                case 0:
-//                    return getString(R.string.title_section1).toUpperCase(l);
-//                case 1:
-//                    return getString(R.string.title_section2).toUpperCase(l);
-//                case 2:
-//                    return getString(R.string.title_section3).toUpperCase(l);
-//            }
+
             return null;
         }
     }

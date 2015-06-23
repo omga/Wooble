@@ -32,11 +32,12 @@ public class FacebookDataFetcher {
                     public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
                         Log.d(TAG, jsonObject.toString());
                         try {
-
-                            String name = jsonObject.getString("first_name");
-                            user.setName(name);
+                            user.setName(jsonObject.getString("first_name"));
                             user.setGender(jsonObject.getString("gender"));
-                            user.setGender(jsonObject.getString("birthday"));
+                            user.setBirthday(jsonObject.getString("birthday"));
+                            user.setEmail(jsonObject.getString("email"));
+                            String profilePic = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url");
+                            user.setProfilePicture(profilePic);
                             user.saveInBackground();
 
                         } catch (JSONException e) {
@@ -45,6 +46,9 @@ public class FacebookDataFetcher {
 
                     }
                 });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields","birthday,first_name,last_name,gender,picture,id,email");
+        graphRequest.setParameters(parameters);
         graphRequest.executeAsync();
 
     }
@@ -58,9 +62,6 @@ public class FacebookDataFetcher {
                     public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
                         Log.d(TAG, "response: " + jsonObject);
                         try {
-                            String profilePic = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url");
-                            user.setProfilePicture(profilePic);
-                            user.saveInBackground();
                             JSONArray jsonArray = jsonObject.getJSONObject("albums").getJSONArray("data");
                             String id = jsonArray.getJSONObject(0).getString("id");
                             getUserPictures(id);
