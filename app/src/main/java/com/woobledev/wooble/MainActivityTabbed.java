@@ -59,6 +59,7 @@ public class MainActivityTabbed extends AppCompatActivity implements UserListFra
 
         ButterKnife.inject(this);
         mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager()));
+        mViewPager.setOffscreenPageLimit(3);
         mTabLayout.setupWithViewPager(mViewPager);
         setSupportActionBar(mToolbar);
 
