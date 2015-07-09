@@ -2,11 +2,16 @@ package com.woobledev.wooble;
 
 import java.util.Locale;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +47,7 @@ public class MainActivityTabbed extends AppCompatActivity implements UserListFra
     ProgressDialog progressDialog;
     BroadcastReceiver receiver;
     WoobleUser mUser;
-
+    int mCurrentColor, mGreen, mBlue, mRed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +68,56 @@ public class MainActivityTabbed extends AppCompatActivity implements UserListFra
         mViewPager.setOffscreenPageLimit(3);
         mTabLayout.setupWithViewPager(mViewPager);
         setSupportActionBar(mToolbar);
-
+        mGreen = getResources().getColor(R.color.green_color_500);
+        mBlue = getResources().getColor(R.color.main_color_500);
+        mRed = getResources().getColor(R.color.accent_color_500);
+        mCurrentColor = mBlue;
         waitMessageServiceStart();
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        colorAnimate(mCurrentColor, mBlue);
+                        mCurrentColor = mBlue;
+                        break;
+                    case 1:
+                        colorAnimate(mCurrentColor, mGreen);
+                        mCurrentColor = mGreen;
+                        break;
+                    case 2:
+                        colorAnimate(mCurrentColor, mRed);
+                        mCurrentColor = mRed;
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    private void colorAnimate(int colorFrom, int colorTo){
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        colorAnimation.setDuration(1000);
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                mToolbar.setBackgroundColor((Integer)animator.getAnimatedValue());
+                mTabLayout.setBackgroundColor((Integer)animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
     }
     private void waitMessageServiceStart() {
         progressDialog = new ProgressDialog(this);
@@ -134,10 +188,15 @@ public class MainActivityTabbed extends AppCompatActivity implements UserListFra
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(position == 0)
-                return UserListFragment.newInstance("0","0");
-            if(position == 1)
-                return UserListFragment.newInstance("1","1");
+            if(position == 0) {
+
+                return UserListFragment.newInstance("0", "0");
+            }
+            if(position == 1) {
+
+                return UserListFragment.newInstance("1", "1");
+            }
+
             return PlaceholderFragment.newInstance(position);
         }
 
@@ -160,6 +219,27 @@ public class MainActivityTabbed extends AppCompatActivity implements UserListFra
             }
             return null;
         }
+
+//        private void animateAppAndStatusBar(int fromColor, final int toColor) {
+//            Animator animator = ViewAnimationUtils.createCircularReveal(
+//                    mRevealView,
+//                    mToolbar.getWidth() / 2,
+//                    mToolbar.getHeight() / 2, 0,
+//                    mToolbar.getWidth() / 2);
+//
+//            animator.addListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationStart(Animator animation) {
+//                    mRevealView.setBackgroundColor(getResources().getColor(toColor));
+//                }
+//            });
+//
+//            mRevealBackgroundView.setBackgroundColor(getResources().getColor(fromColor));
+//            animator.setStartDelay(200);
+//            animator.setDuration(125);
+//            animator.start();
+//            mRevealView.setVisibility(View.VISIBLE);
+//        }
     }
 
     /**

@@ -5,6 +5,7 @@
     <color name="main_color_100">#bdddf4</color>
     <color name="accent_color_500">#f44336</color>
     <color name="accent_color_200">#ef9a9a</color>
+    <color name="green_color_500">#4caf50</color>
     <color name="sinch_purple">#ff63029d</color>
     <color name="off_white">#fffafafa</color>
     <color name="dark_gray">#ffb3b3b3</color>

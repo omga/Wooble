@@ -18,6 +18,7 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.widget.LoginButton;
 import com.parse.LogInCallback;
 import com.parse.Parse;
@@ -119,7 +120,18 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
                             dataFetcher.getUserAlbums((WoobleUser) user);
 
                         }
-                        startMainActivity();
+                        new GraphRequest(
+                                AccessToken.getCurrentAccessToken(),
+                                "/me/invitable_friends",
+                                null,
+                                HttpMethod.GET,
+                                new GraphRequest.Callback() {
+                                    public void onCompleted(GraphResponse response) {
+                                        Log.d("MyApp", "invitable_friends! " + response);
+                                    }
+                                }
+                        ).executeAsync();
+                        //startMainActivity();
 
                         }
                     });
@@ -161,5 +173,9 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
 
         }
     }
+
+    
+
+
 }
 

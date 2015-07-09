@@ -31,9 +31,11 @@ public class ProfileFragment extends Fragment {
         ButterKnife.inject(this, v);
         ImageView imageView = (ImageView) v.findViewById(R.id.pictureImageView);
         WoobleUser user = ((ProfileActivity) getActivity()).getUser();
-        userName.setText(user.getName()!=null ? user.getName() : user.getUsername());
-        userAge.append(user.getBirthday() != null ? user.getBirthday() : "no age((");
-        userGender.append(user.getGender() != null ? user.getGender() : "no dataaa");
+        if(user!=null) {
+            userName.setText(user.getName() != null ? user.getName() : user.getUsername());
+            userAge.append(user.getBirthday() != null ? user.getBirthday() : "no age((");
+            userGender.append(user.getGender() != null ? user.getGender() : "no dataaa");
+        }
 //        if(user.getPictures()!=null && user.getPictures().size()>0)
 //            Picasso.with(getActivity())
 //                    .load(user.getPictures().get(1))

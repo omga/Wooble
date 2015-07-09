@@ -111,12 +111,12 @@ public class ProfileActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             return ProfileImageFragment.newInstance(
-                    mUser.getPictures() != null ? mUser.getPictures().get(position):null);
+                    mUser!=null&&mUser.getPictures() != null ? mUser.getPictures().get(position):null);
         }
 
         @Override
         public int getCount() {
-            if(mUser.getPictures()!=null)
+            if(mUser!=null&&mUser.getPictures()!=null)
                 return mUser.getPictures().size();
             return 1;
         }
