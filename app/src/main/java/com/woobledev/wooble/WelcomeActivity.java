@@ -95,7 +95,7 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
             @Override
             public void onClick(View v) {
             List<String> permissions = Arrays.
-                    asList("public_profile", "email", "user_photos", "user_status", "user_about_me", "user_birthday");
+                    asList("public_profile", "email", "user_photos", "user_status", "user_about_me", "user_birthday", "user_friends");
             ParseFacebookUtils.logInWithReadPermissionsInBackground(
                 WelcomeActivity.this, permissions, new LogInCallback() {
                     @Override
@@ -120,9 +120,9 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
                             dataFetcher.getUserAlbums((WoobleUser) user);
 
                         }
-                        new GraphRequest(
+                        GraphRequest graphRequest = new GraphRequest(
                                 AccessToken.getCurrentAccessToken(),
-                                "/me/invitable_friends",
+                                "/me/taggable_friends",
                                 null,
                                 HttpMethod.GET,
                                 new GraphRequest.Callback() {
@@ -130,7 +130,9 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
                                         Log.d("MyApp", "invitable_friends! " + response);
                                     }
                                 }
-                        ).executeAsync();
+                        );
+
+                        graphRequest.executeAsync();
                         //startMainActivity();
 
                         }
