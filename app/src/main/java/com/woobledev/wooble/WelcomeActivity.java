@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,10 +21,14 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.parse.LogInCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.woobledev.wooble.view.kbv.KenBurnsView;
 
@@ -46,15 +51,17 @@ import butterknife.InjectView;
  * https://developers.google.com/+/mobile/android/getting-started#step_1_enable_the_google_api
  * and follow the steps in "Step 1" to create an OAuth 2.0 client for your package.
  */
-public class WelcomeActivity extends Activity implements BlankFragment.OnFragmentInteractionListener {
+public class WelcomeActivity extends Activity implements BlankFragment.OnFragmentInteractionListener,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
-
+    private static final String TAG = "WelcomeActivity";
     @InjectView(R.id.text_welcome1) TextView textWelcome;
     @InjectView(R.id.ken_burns_images) KenBurnsView kbv;
     @InjectView(R.id.text_welcome2) TextView textWelcome2;
     @InjectView(R.id.btn_parse_login) Button buttonLogin;
+    private GoogleApiClient locationClient;
+    private Location location;
 
-    private static final String TAG = "WelcomeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +70,16 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
         ButterKnife.inject(this);
         animationAlpha(textWelcome, 500, null);
         animationAlpha(textWelcome2, 2000, new AnimationEndListener());
+        buildGoogleApiClient();
 
     }
-
+    protected synchronized void buildGoogleApiClient() {
+        locationClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -120,20 +134,10 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
                             dataFetcher.getUserAlbums((WoobleUser) user);
 
                         }
-                        GraphRequest graphRequest = new GraphRequest(
-                                AccessToken.getCurrentAccessToken(),
-                                "/me/taggable_friends",
-                                null,
-                                HttpMethod.GET,
-                                new GraphRequest.Callback() {
-                                    public void onCompleted(GraphResponse response) {
-                                        Log.d("MyApp", "invitable_friends! " + response);
-                                    }
-                                }
-                        );
-
-                        graphRequest.executeAsync();
-                        //startMainActivity();
+                        if(location!=null)
+                            ((WoobleUser) user).setLocation(new ParseGeoPoint(
+                                    location.getLatitude(),location.getLongitude()));
+                        startMainActivity();
 
                         }
                     });
@@ -148,6 +152,23 @@ public class WelcomeActivity extends Activity implements BlankFragment.OnFragmen
         if (listener!=null)
             alphaAnimation.addListener(listener);
         alphaAnimation.start();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG,"loc "+location);
+        location = LocationServices.FusedLocationApi.getLastLocation(locationClient);
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
     private class AnimationEndListener implements Animator.AnimatorListener {

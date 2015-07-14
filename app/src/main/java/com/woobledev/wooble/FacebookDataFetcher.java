@@ -32,10 +32,14 @@ public class FacebookDataFetcher {
                     public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
                         Log.d(TAG, jsonObject.toString());
                         try {
-                            user.setName(jsonObject.getString("first_name"));
-                            user.setGender(jsonObject.getString("gender"));
-                            user.setBirthday(jsonObject.getString("birthday"));
-                            user.setEmail(jsonObject.getString("email"));
+                            if(jsonObject.has("first_name"))
+                                user.setName(jsonObject.getString("first_name"));
+                            if(jsonObject.has("gender"))
+                                user.setGender(jsonObject.getString("gender"));
+                            if(jsonObject.has("birthday"))
+                                user.setBirthday(jsonObject.getString("birthday"));
+                            if(jsonObject.has("email"))
+                                user.setEmail(jsonObject.getString("email"));
                             String profilePic = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url");
                             user.setProfilePicture(profilePic);
                             user.saveInBackground();
@@ -60,11 +64,20 @@ public class FacebookDataFetcher {
 
                     @Override
                     public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                        Log.d(TAG, "response: " + jsonObject);
+                        Log.d(TAG, "getUserAlbums: " + jsonObject);
                         try {
-                            JSONArray jsonArray = jsonObject.getJSONObject("albums").getJSONArray("data");
-                            String id = jsonArray.getJSONObject(0).getString("id");
-                            getUserPictures(id);
+                            if(jsonObject.has("albums")) {
+                                JSONArray jsonArray = jsonObject.getJSONObject("albums").getJSONArray("data");
+                                String id = jsonArray.getJSONObject(0).getString("id");
+                                getUserPictures(id);
+                            }
+                            else if(jsonObject.has("picture")){
+                                String picUrl = jsonObject.getJSONObject("picture")
+                                        .getJSONObject("data")
+                                        .getString("url");
+                                user.addPicture(picUrl);
+                                user.saveInBackground();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

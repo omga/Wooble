@@ -197,7 +197,7 @@ public class MainActivityTabbed extends AppCompatActivity implements UserListFra
                 return UserListFragment.newInstance("1", "1");
             }
 
-            return PlaceholderFragment.newInstance(position);
+            return UsersNearbyGridFragment.newInstance("2", "2");
         }
 
         @Override

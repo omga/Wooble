@@ -1,8 +1,10 @@
 package com.woobledev.wooble;
 
 import com.parse.ParseClassName;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +18,8 @@ public class WoobleUser extends ParseUser {
     }
 
     public void addPicture(String picUrl) {
+        if(getPictures() == null)
+            setPictures(new ArrayList<String>());
         getPictures().add(picUrl);
     }
 
@@ -47,8 +51,6 @@ public class WoobleUser extends ParseUser {
         put("profile_picture",name);
     }
 
-
-
     public String getBirthday() {
         return getString("birthday");
     }
@@ -57,20 +59,28 @@ public class WoobleUser extends ParseUser {
         put("birthday",birthday);
     }
 
-public static enum Gender {
-    MALE("male"),
-    FEMALE("female");
-    private String gender;
-    Gender(String gender) {
-        this.gender = gender;
+    public void setLocation(ParseGeoPoint geoPoint) {
+        put("location", geoPoint);
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public ParseGeoPoint getLocation() {
+        return getParseGeoPoint("location");
     }
 
-    public String getGender() {
-        return gender;
+    public static enum Gender {
+        MALE("male"),
+        FEMALE("female");
+        private String gender;
+        Gender(String gender) {
+            this.gender = gender;
+        }
+
+        public void setGender(String gender) {
+            this.gender = gender;
+        }
+
+        public String getGender() {
+            return gender;
+        }
     }
-}
 }
